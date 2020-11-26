@@ -1,0 +1,33 @@
+{
+  "name": "gh-action-jira-issue",
+  "version": "1.0.0",
+  "description": "GitHub Action to create and update Jira issues",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "ncc build index.js -o dist --source-map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElisaOyj/gh-action-jira-issue.git"
+  },
+  "author": "Elisa Oyj",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ElisaOyj/gh-action-jira-issue/issues"
+  },
+  "homepage": "https://github.com/ElisaOyj/gh-action-jira-issue#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "j2m": "^1.1.0",
+    "jira-client": "^6.21.1",
+    "js-yaml": "^3.14.0",
+    "moment-timezone": "^0.5.32"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.25.1",
+    "jest": "^26.6.3",
+    "rewire": "^5.0.0"
+  }
+}
