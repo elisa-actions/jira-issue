@@ -1,1 +1,1 @@
-exports.createIssue = async function () {}
+exports.createIssue = async function () {};
