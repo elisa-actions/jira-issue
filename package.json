@@ -20,8 +20,8 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "j2m": "^1.1.0",
     "jira-client": "^6.21.1",
+    "jira2md": "^2.0.4",
     "js-yaml": "^3.14.0",
     "moment-timezone": "^0.5.32"
   },
