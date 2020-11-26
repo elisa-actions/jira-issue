@@ -1,0 +1,29 @@
+create:
+  issue_link_type: "Cause"
+  fields:
+    project:
+      id: "11212"
+    issuetype:
+      id: "50"
+    components:
+      - id: "17501"
+    customfield_10913:
+      id: "15862"
+    customfield_10898:
+      type: current_time
+    customfield_10899:
+      type: current_time_plus_hour
+    customfield_11581:
+      id: "16820"
+resolve:
+  transition:
+    id: "21"
+  fields:
+    resolution:
+      id: "1"
+    customfield_10914:
+      from: customfield_10898
+    customfield_10915:
+      type: current_time
+    customfield_10916:
+      id: "15868"
