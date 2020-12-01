@@ -1,4 +1,5 @@
 const core = require("@actions/core");
+const { context } = require("@actions/github");
 const JiraApi = require("jira-client");
 const { parseConfig } = require("./config");
 
@@ -29,6 +30,45 @@ exports.newIssue = async function (title, description) {
   );
   try {
     return await jira.addNewIssue(issueData);
+  } catch (error) {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
+};
+
+exports.getIssue = async function (number) {
+  const jira = getJiraClient();
+  try {
+    return await jira.findIssue(number);
+  } catch {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
+};
+
+exports.resolveIssue = async function (issue) {
+  const jira = getJiraClient();
+  const config = parseConfig();
+  const transition = config.resolve.transition;
+  const fields = {};
+  if (config.resolve.fields) {
+    for (const [key, value] of Object.entries(config.resolve.fields)) {
+      if (value.type === "current_time") {
+        fields[key] = moment().format();
+      } else if (value.from) {
+        fields[key] = issue.fields[value.from];
+      } else {
+        fields[key] = value;
+      }
+    }
+  }
+  if (context.payload.client_payload && context.payload.client_payload.fields) {
+    Object.assign(fields, context.payload.client_payload.fields);
+  }
+  const resolve = { transition, fields };
+  console.log(`Update issue:\n${JSON.stringify(resolve)}`);
+  try {
+    await jira.transitionIssue(issue.id, resolve);
   } catch (error) {
     core.setFailed(error.message);
     process.exit(1);

@@ -1,5 +1,5 @@
 const core = require("@actions/core");
-const { context } = require("@actions/github/lib/utils");
+const { context } = require("@actions/github");
 const j2m = require("jira2md");
 
 const { appendReleaseBody, getAuthor, getReviews, getUser } = require("./gh");
