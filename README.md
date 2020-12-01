@@ -16,6 +16,8 @@
 | `link-release`       | no       | Add issue link to GitHub release                                                                            |
 | `include-author`     | no       | Include PR author in ticket description                                                                     |
 | `include-reviews`    | no       | Include reviews in ticket description                                                                       |
+| `locale`             | no       | Locale for datetimes, default "fi"                                                                          |
+| `timezone`           | no       | Timezone for datetimes, default "Europe/Helsinki"                                                           |
 
 ## Development
 

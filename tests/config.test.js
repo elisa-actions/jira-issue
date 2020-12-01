@@ -3,7 +3,7 @@ const { parseConfig } = require("../src/config");
 
 test("read configuration", () => {
   setInputs({
-    configuration_file: ".github/jira-config.yml",
+    "configuration-file": ".github/jira-config.yml",
   });
   const config = parseConfig();
   expect(config).toEqual({
