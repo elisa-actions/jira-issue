@@ -65,7 +65,7 @@ on:
 
 jobs:
   resolve-ticket:
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Update ticket status
@@ -79,7 +79,7 @@ jobs:
 
 ## Triggering from repository dispatch
 
-If you configure the repository dispatch event you can trigger the action from a webhook by sending a POST request to https://api.github.com/repos/<user>/<repo>/dispatches.
+If you configure the repository dispatch event you can trigger the action from a webhook by sending a POST request to `https://api.github.com/repos/<user>/<repo>/dispatches`.
 
 Here is an example with curl:
 
