@@ -15,7 +15,7 @@ test("read configuration", () => {
         components: [{ id: "17501" }],
         customfield_10913: { id: "15862" },
         customfield_10898: { type: "current_time" },
-        customfield_10899: { type: "current_time_plus_hour" },
+        customfield_10899: { type: "current_time", offset: "1:00:00" },
         customfield_11581: { id: "16820" },
       },
     },

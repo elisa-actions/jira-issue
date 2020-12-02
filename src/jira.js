@@ -54,7 +54,13 @@ exports.resolveIssue = async function (issue) {
   if (config.resolve.fields) {
     for (const [key, value] of Object.entries(config.resolve.fields)) {
       if (value.type === "current_time") {
-        fields[key] = moment().format();
+        const now = moment();
+        if (value.offset) {
+          const offset = moment.duration(value.offset);
+          fields[key] = now.add(offset).format();
+        } else {
+          fields[key] = now.format();
+        }
       } else if (value.from) {
         fields[key] = issue.fields[value.from];
       } else {
@@ -93,9 +99,13 @@ const createIssueData = function (summary, description, linkedIssueKey) {
   if (config.create.fields) {
     for (const [key, value] of Object.entries(config.create.fields)) {
       if (value.type === "current_time") {
-        fields[key] = moment().format();
-      } else if (value.type === "current_time_plus_hour") {
-        fields[key] = moment().add({ hour: 1 }).format();
+        const now = moment();
+        if (value.offset) {
+          const offset = moment.duration(value.offset);
+          fields[key] = now.add(offset).format();
+        } else {
+          fields[key] = now.format();
+        }
       } else {
         fields[key] = value;
       }

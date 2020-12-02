@@ -12,7 +12,8 @@ create:
     customfield_10898:
       type: current_time
     customfield_10899:
-      type: current_time_plus_hour
+      type: current_time
+      offset: "1:00:00"
     customfield_11581:
       id: "16820"
 resolve:
