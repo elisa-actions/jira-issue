@@ -27,7 +27,7 @@ jobs:
           prerelease_id: "rc"
           release_draft: true
       - name: Create ticket
-        uses: evjanne/jira-bot@main
+        uses: ElisaOyj/gh-action-jira-issue@v1
         if: ${{ github.event.action == 'closed' && steps.create_release.outputs.version }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Update ticket status
-        uses: evjanne/jira-bot@main
+        uses: ElisaOyj/gh-action-jira-issue@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           jira_host: example.com/jira
