@@ -30,14 +30,14 @@ jobs:
         uses: ElisaOyj/gh-action-jira-issue@v1
         if: ${{ github.event.action == 'closed' && steps.create_release.outputs.version }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          jira_host: example.com/jira
-          jira_username: ${{ secrets.JIRA_USERNAME }}
-          jira_password: ${{ secrets.JIRA_PASSWORD }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          jira-host: example.com/jira
+          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-password: ${{ secrets.JIRA_PASSWORD }}
           version: ${{ steps.create_release.outputs.version }}
           title: ${{ steps.create_release.outputs.release_title }}
           description: ${{ steps.create_release.outputs.release_body }}
-          release_id: ${{ steps.create_release.outputs.release_id }}
+          release-id: ${{ steps.create_release.outputs.release_id }}
           action: "create-ticket"
       - name: Publish release
         uses: actions/github-script@v3
@@ -71,10 +71,10 @@ jobs:
       - name: Update ticket status
         uses: ElisaOyj/gh-action-jira-issue@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          jira_host: example.com/jira
-          jira_username: ${{ secrets.JIRA_USERNAME }}
-          jira_password: ${{ secrets.JIRA_PASSWORD }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          jira-host: example.com/jira
+          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-password: ${{ secrets.JIRA_PASSWORD }}
 ```
 
 ## Triggering from repository dispatch
