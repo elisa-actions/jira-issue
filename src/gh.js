@@ -37,21 +37,31 @@ exports.getReviews = async function () {
     });
     return reviews.data;
   } catch (error) {
-    console.warn("WARNING: No reviews found");
-    return null;
+    core.setFailed(error.message);
+    process.exit(1);
   }
 };
 
 exports.getAuthor = async function () {
-  const pr = await exports.getPR();
-  return pr.data.user;
+  try {
+    const pr = await exports.getPR();
+    return pr.data.user;
+  } catch (error) {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
 };
 
 exports.getUser = async function (username) {
   const token = core.getInput("github_token", { required: true });
   const octokit = getOctokit(token);
-  const user = await octokit.users.getByUsername({ username });
-  return user.data;
+  try {
+    const user = await octokit.users.getByUsername({ username });
+    return user.data;
+  } catch (error) {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
 };
 
 exports.getRelease = async function () {
