@@ -1,0 +1,54 @@
+name: "GitHub Action Jira Issue"
+description: "Create and update Jira tickets"
+inputs:
+  github-token:
+    description: "GitHub token"
+    required: true
+  jira-host:
+    description: "Jira server"
+    required: true
+  jira-username:
+    description: "Jira account"
+    required: true
+  jira-password:
+    description: "Account password"
+    required: true
+  action:
+    description: "Action type (create-issue/resolve-issue) needs to be provided as a parameter or optionally from the dispatch event"
+    required: false
+  title:
+    description: "Issue title, needs to be provided as a parameter or optionally from the dispatch event"
+    required: false
+  description:
+    description: "Issue description, needs to be provided as a parameter or optionally from the dispatch event"
+    required: false
+  ticket-descriptor:
+    description: "Text before ticket link in release notes"
+    required: false
+  link-release:
+    description: "Add issue link to GitHub release"
+    required: false
+    default: true
+  include-author:
+    description: "Include PR author in ticket description"
+    required: false
+    default: true
+  include-reviews:
+    description: "Include reviews in ticket description"
+    required: false
+    default: true
+  locale:
+    description: "Locale for datetimes"
+    required: false
+    default: "fi"
+  timezone:
+    description: "Timezone for datetimes"
+    required: false
+    default: "Europe/Helsinki"
+  configuration-file:
+    description: "Path for field mapping configuration"
+    default: ".github/jira-config.yml"
+    required: false
+runs:
+  using: "node12"
+  main: "dist/index.js"
