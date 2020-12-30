@@ -50,6 +50,28 @@ test("new issue with feature ticket", async () => {
   });
 });
 
+test("new issue with non-existing feature ticket", async () => {
+  mockFindIssue.mockImplementation(() => {
+    throw new Error("Not found");
+  });
+  const issue = await newIssue("DEMO-4321 Some title", "Description");
+  expect(issue).toEqual({ key: "DEMO-1234" });
+  expect(mockAddNewIssue).toHaveBeenCalledWith({
+    update: {},
+    fields: {
+      summary: "Some title",
+      description: "Description",
+      project: { id: "11212" },
+      issuetype: { id: "50" },
+      components: [{ id: "17501" }],
+      customfield_10913: { id: "15862" },
+      customfield_10898: "2020-01-01T02:00:00+02:00",
+      customfield_10899: "2020-01-01T03:00:00+02:00",
+      customfield_11581: { id: "16820" },
+    },
+  });
+});
+
 test("new issue without feature ticket", async () => {
   await newIssue("Some title", "Description");
   expect(mockAddNewIssue).toHaveBeenCalledWith({
