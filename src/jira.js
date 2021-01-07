@@ -23,7 +23,7 @@ function getJiraClient() {
 exports.newIssue = async function (title, description) {
   const jira = getJiraClient();
   const parsedTitle = parseTitle(title);
-  const issueData = createIssueData(
+  const issueData = await createIssueData(
     parsedTitle.title,
     description,
     parsedTitle.featureTicket
@@ -90,7 +90,7 @@ const parseTitle = function (title) {
   return { title };
 };
 
-const createIssueData = function (summary, description, linkedIssueKey) {
+const createIssueData = async function (summary, description, linkedIssueKey) {
   const config = parseConfig();
   const fields = {
     summary: summary,
@@ -113,18 +113,24 @@ const createIssueData = function (summary, description, linkedIssueKey) {
   }
   const update = {};
   if (linkedIssueKey && config.create && config.create.issue_link_type) {
-    update["issuelinks"] = [
-      {
-        add: {
-          type: {
-            name: config.create.issue_link_type,
-          },
-          inwardIssue: {
-            key: linkedIssueKey,
+    try {
+      const jira = getJiraClient();
+      await jira.findIssue(linkedIssueKey);
+      update["issuelinks"] = [
+        {
+          add: {
+            type: {
+              name: config.create.issue_link_type,
+            },
+            inwardIssue: {
+              key: linkedIssueKey,
+            },
           },
         },
-      },
-    ];
+      ];
+    } catch {
+      // Linked issue doesn't exist
+    }
   }
   const issueData = {
     update,
