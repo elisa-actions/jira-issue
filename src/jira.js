@@ -13,9 +13,9 @@ moment.tz.setDefault(timezone);
 function getJiraClient() {
   return new JiraApi({
     protocol: "https",
-    host: core.getInput("jira_host", { required: true }),
-    username: core.getInput("jira_username", { required: true }),
-    password: core.getInput("jira_password", { required: true }),
+    host: core.getInput("jira-host", { required: true }),
+    username: core.getInput("jira-username", { required: true }),
+    password: core.getInput("jira-password", { required: true }),
     apiVersion: "2",
   });
 }
