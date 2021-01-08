@@ -53,7 +53,7 @@ exports.getAuthor = async function () {
 };
 
 exports.getUser = async function (username) {
-  const token = core.getInput("github_token", { required: true });
+  const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   try {
     const user = await octokit.users.getByUsername({ username });
@@ -65,10 +65,10 @@ exports.getUser = async function (username) {
 };
 
 exports.getRelease = async function () {
-  const token = core.getInput("github_token", { required: true });
+  const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
-  const release_id = core.getInput("release_id");
+  const release_id = core.getInput("release-id");
   if (release_id) {
     return await octokit.repos.getRelease({ owner, repo, release_id });
   } else {
@@ -83,7 +83,7 @@ exports.appendReleaseBody = async function (text) {
   const release = await exports.getRelease();
   const release_id = release.data.id;
   const body = release.data.body + "\n\n" + text;
-  const token = core.getInput("github_token", { required: true });
+  const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
   octokit.repos.updateRelease({ owner, repo, release_id, body });
