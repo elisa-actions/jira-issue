@@ -7,20 +7,30 @@ exports.getPR = async function () {
 
   if (context.issue) {
     const { owner, repo, number } = context.issue;
+    console.log(`Get PR #${number} from issue context`);
     const pr = await octokit.pulls.get({ owner, repo, pull_number: number });
     return pr;
   }
   const version =
     core.getInput("version") || context.payload.client_payload.version;
+  console.log(`Find PR based on version number ${version}`);
   const { owner, repo } = context.repo;
   const tags = await octokit.paginate(
     octokit.repos.listTags.endpoint.merge({ owner, repo })
   );
   const releaseTag = tags.filter((t) => t.name === version)[0];
   const q = `SHA:${releaseTag.commit.sha}`;
-  const searchResults = await octokit.search.issuesAndPullRequests({ q });
-  const pr = searchResults.data.items[0];
-  return pr;
+  console.log(`Search pull request with ${q}`);
+  try {
+    const searchResults = await octokit.search.issuesAndPullRequests({ q });
+    console.log(`Found ${searchResults.length} matches`);
+    const pr = searchResults.data.items[0];
+    return pr;
+  } catch (error) {
+    console.log("Failed to find the correct PR");
+    core.setFailed(error.message);
+    process.exit(1);
+  }
 };
 
 exports.getReviews = async function () {
@@ -38,6 +48,7 @@ exports.getReviews = async function () {
     return reviews.data;
   } catch (error) {
     console.log(`Failed to get reviews for PR #${pull_number}`);
+    console.log(JSON.stringify(pr, null, 2));
     core.setFailed(error.message);
     process.exit(1);
   }
