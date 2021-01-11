@@ -104,6 +104,7 @@ You can provide any custom fields you need in the dispatch event, the values wil
 | `action`             | yes      | Action type (`create-issue` or `resolve-issue`), can be supplied as a parameter or from repository dispatch |
 | `title`              | yes      | Issue title, can be supplied as a parameter or from repository dispatch                                     |
 | `version`            | no       | GitHub release version when issue context is not available, also from repository dispatch                   |
+| `release-id`         | no       | Release ID for fetching the release data. If not provided, the version number will be used instead          |
 | `description`        | no       | Issue description, can be supplied as a parameter or from repository dispatch                               |
 | `configuration-file` | no       | Path for field mapping configuration, default `.github/jira-config.yaml`                                    |
 | `ticket-descriptor`  | no       | Text to show before issue link in the release                                                               |

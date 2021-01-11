@@ -6,6 +6,7 @@ const { appendReleaseBody, getAuthor, getReviews, getUser } = require("./gh");
 const { newIssue } = require("./jira");
 
 exports.createIssue = async function () {
+  console.log("Start issue creation");
   const jiraHost = core.getInput("jira-host", { required: true });
   const issueDescriptor = core.getInput("issue-descriptor");
   const title = core.getInput("title") || context.payload.client_payload.title;
@@ -25,6 +26,7 @@ exports.createIssue = async function () {
 };
 
 async function buildIssueBody(description) {
+  console.log("Build issue body message");
   const includeAuthor = (core.getInput("include-author") || "true") === "true";
   const includeReviews =
     (core.getInput("include-reviews") || "true") === "true";
@@ -37,6 +39,7 @@ async function buildIssueBody(description) {
   }
 
   if (includeReviews) {
+    console.log("Fetch reviews");
     reviews = await getReviews();
     if (reviews) {
       body += "\n\n*Reviewers*\n";

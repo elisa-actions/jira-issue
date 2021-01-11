@@ -128,7 +128,8 @@ const createIssueData = async function (summary, description, linkedIssueKey) {
           },
         },
       ];
-    } catch {
+    } catch (error) {
+      console.log("Linked issue does not exist");
       // Linked issue doesn't exist
     }
   }
