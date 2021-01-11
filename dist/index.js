@@ -60966,6 +60966,7 @@ const { appendReleaseBody, getAuthor, getReviews, getUser } = __webpack_require_
 const { newIssue } = __webpack_require__(3845);
 
 exports.createIssue = async function () {
+  console.log("Start issue creation");
   const jiraHost = core.getInput("jira-host", { required: true });
   const issueDescriptor = core.getInput("issue-descriptor");
   const title = core.getInput("title") || context.payload.client_payload.title;
@@ -60985,6 +60986,7 @@ exports.createIssue = async function () {
 };
 
 async function buildIssueBody(description) {
+  console.log("Build issue body message");
   const includeAuthor = (core.getInput("include-author") || "true") === "true";
   const includeReviews =
     (core.getInput("include-reviews") || "true") === "true";
@@ -60997,6 +60999,7 @@ async function buildIssueBody(description) {
   }
 
   if (includeReviews) {
+    console.log("Fetch reviews");
     reviews = await getReviews();
     if (reviews) {
       body += "\n\n*Reviewers*\n";
@@ -61258,7 +61261,8 @@ const createIssueData = async function (summary, description, linkedIssueKey) {
           },
         },
       ];
-    } catch {
+    } catch (error) {
+      console.log("Linked issue does not exist");
       // Linked issue doesn't exist
     }
   }
@@ -61279,9 +61283,12 @@ const { getRelease } = __webpack_require__(6989);
 const { getIssue, resolveIssue } = __webpack_require__(3845);
 
 exports.resolveIssue = async function () {
+  console.log("Start issue resolution");
   const release = await getRelease();
   const issueNumber = parseIssueNumber(release.data.body);
+  console.log(`Get issue ${issueNumber}`);
   const issue = await getIssue(issueNumber);
+  console.log("Resolve issue");
   await resolveIssue(issue);
 };
 
