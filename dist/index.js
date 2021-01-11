@@ -61073,6 +61073,7 @@ exports.getReviews = async function () {
     });
     return reviews.data;
   } catch (error) {
+    console.log(`Failed to get reviews for PR #${pull_number}`);
     core.setFailed(error.message);
     process.exit(1);
   }
@@ -61083,6 +61084,7 @@ exports.getAuthor = async function () {
     const pr = await exports.getPR();
     return pr.data.user;
   } catch (error) {
+    console.log("Failed to get PR author");
     core.setFailed(error.message);
     process.exit(1);
   }
@@ -61095,6 +61097,7 @@ exports.getUser = async function (username) {
     const user = await octokit.users.getByUsername({ username });
     return user.data;
   } catch (error) {
+    console.log(`Failed to get user ${username}`);
     core.setFailed(error.message);
     process.exit(1);
   }
@@ -61110,7 +61113,7 @@ exports.getRelease = async function () {
   } else {
     const tag =
       core.getInput("version") || context.payload.client_payload.version;
-    console.log(`Owner: ${owner}\nRepo: ${repo}\nTag: ${tag}`);
+    console.log(`Get release by tag ${tag}`);
     return await octokit.repos.getReleaseByTag({ owner, repo, tag });
   }
 };
