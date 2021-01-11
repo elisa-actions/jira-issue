@@ -61060,7 +61060,7 @@ exports.getPR = async function () {
 };
 
 exports.getReviews = async function () {
-  const pr = exports.getPR();
+  const pr = await exports.getPR();
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
