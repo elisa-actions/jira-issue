@@ -16,6 +16,12 @@ inputs:
   action:
     description: "Action type (create-issue/resolve-issue) needs to be provided as a parameter or optionally from the dispatch event"
     required: false
+  version:
+    description: "GitHub release version when issue context is not available, also from repository dispatch"
+    required: false
+  release-id:
+    description: "Release ID for fetching the release data. If not provided, the version number will be used instead"
+    required: false
   title:
     description: "Issue title, needs to be provided as a parameter or optionally from the dispatch event"
     required: false
