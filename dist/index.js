@@ -61074,7 +61074,7 @@ exports.getReviews = async function () {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
-  const pull_number = pr.number;
+  const pull_number = pr.data.number;
   try {
     const reviews = await octokit.pulls.listReviews({
       owner,
