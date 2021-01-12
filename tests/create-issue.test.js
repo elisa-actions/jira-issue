@@ -54,9 +54,27 @@ test("create issue", async () => {
   await createIssue();
   expect(newIssue).toHaveBeenCalledWith(
     "Ticket title",
-    "Ticket description\n\nAuthor:\n[~user1@example.com]\n\n*Reviewers*\n[user2|https://github.com/user2]\n"
+    "Ticket description\n\n*Author*\n[~user1@example.com]\n\n*Reviewers*\n[user2|https://github.com/user2]\n"
   );
   expect(appendReleaseBody).toHaveBeenCalledWith(
     "Jira issue: [DEMO-1234](https://example.com/browse/DEMO-1234)"
+  );
+});
+
+test("issue body is cleaned up", async () => {
+  setInputs({
+    "jira-host": "example.com",
+    "issue-descriptor": "Jira issue",
+    title: "Ticket title",
+    description:
+      "Ticket description\n" +
+      "<details><summary><strong>Bug fixes</strong></summary><p>\n" +
+      "- some fix [abcd12](link)\n" +
+      "</p></details>",
+  });
+  await createIssue();
+  expect(newIssue).toHaveBeenCalledWith(
+    "Ticket title",
+    "Ticket description\n*Bug fixes*\n- some fix [abcd12|link]\n\n*Author*\n[~user1@example.com]\n\n*Reviewers*\n[user2|https://github.com/user2]\n"
   );
 });

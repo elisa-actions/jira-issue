@@ -107,7 +107,7 @@ You can provide any custom fields you need in the dispatch event, the values wil
 | `release-id`         | no       | Release ID for fetching the release data. If not provided, the version number will be used instead          |
 | `description`        | no       | Issue description, can be supplied as a parameter or from repository dispatch                               |
 | `configuration-file` | no       | Path for field mapping configuration, default `.github/jira-config.yaml`                                    |
-| `ticket-descriptor`  | no       | Text to show before issue link in the release                                                               |
+| `issue-descriptor`   | no       | Text to show before issue link in the release                                                               |
 | `link-release`       | no       | Add issue link to GitHub release                                                                            |
 | `include-author`     | no       | Include PR author in ticket description                                                                     |
 | `include-reviews`    | no       | Include reviews in ticket description                                                                       |

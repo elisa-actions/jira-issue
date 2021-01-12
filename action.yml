@@ -28,7 +28,7 @@ inputs:
   description:
     description: "Issue description, needs to be provided as a parameter or optionally from the dispatch event"
     required: false
-  ticket-descriptor:
+  issue-descriptor:
     description: "Text before ticket link in release notes"
     required: false
   link-release:
