@@ -60991,10 +60991,11 @@ async function buildIssueBody(description) {
   const includeReviews =
     (core.getInput("include-reviews") || "true") === "true";
   let body = j2m.to_jira(description);
+  body = cleanBody(body);
 
   if (includeAuthor) {
     author = await getAuthor();
-    body += "\n\nAuthor:\n";
+    body += "\n\n*Author*\n";
     body += await getUserLink(author);
   }
 
@@ -61018,6 +61019,12 @@ async function buildIssueBody(description) {
   }
   console.log(body);
   return body;
+}
+
+function cleanBody(body) {
+  body = body.replace(/\[\/?(p|details|summary)\]/gm, "");
+  body = body.replace(/\[\/?(strong)\]/gm, "*");
+  return body.trim();
 }
 
 async function getUserLink(user) {
