@@ -61022,8 +61022,22 @@ async function buildIssueBody(description) {
 }
 
 function cleanBody(body) {
-  body = body.replace(/\[\/?(p|details|summary)\]/gm, "");
+  // remove start and end tags
+  body = body.replace(/\[\/?(p|details|summary|ul)\]/gm, "");
+  // remove end tags only
+  body = body.replace(/\[\/(li|h\d)\]/gm, "");
+  body = body.replace(/\[br \/\]/, "");
+
   body = body.replace(/\[\/?(strong)\]/gm, "*");
+  body = body.replace(/\[\/?(em)\]/gm, "_");
+  body = body.replace(/\[\/?(blockquote)\]/gm, "{quote}");
+  body = body.replace(/\[(li)\]/gm, "- ");
+  body = body.replace(/\[(h\d)\]/gm, ".$1 ");
+  body = body.replace(/\[a href="([^\"]+)"\]([^\[]+)\[\/a\]/gm, "[$2|$1]");
+  body = body.replace(
+    /!\[Dependabot compatibility score\|([^\]]+)\]\]\([^\)]+\)/gm,
+    "!$1!"
+  );
   return body.trim();
 }
 
