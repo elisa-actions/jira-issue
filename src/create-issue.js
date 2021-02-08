@@ -72,12 +72,17 @@ function cleanBody(body) {
   body = body.replace(/\[\/?(em)\]/gm, "_");
   body = body.replace(/\[\/?(blockquote)\]/gm, "{quote}");
   body = body.replace(/\[(li)\]/gm, "- ");
-  body = body.replace(/\[(h\d)\]/gm, ".$1 ");
-  body = body.replace(/\[a href="([^\"]+)"\]([^\[]+)\[\/a\]/gm, "[$2|$1]");
+  body = body.replace(/\[(h\d)\]/gm, "$1. ");
+  body = body.replace(/\[code\]/, "{{");
+  body = body.replace(/\[\/code\]/, "}}");
+  // Dependabot compatibility score fix before square bracket fix
   body = body.replace(
-    /!\[Dependabot compatibility score\|([^\]]+)\]\]\([^\)]+\)/gm,
+    /\[!\[Dependabot compatibility score\|(.+)\]\]\([^\)]+\)/gm,
     "!$1!"
   );
+  // fix links with square brackets
+  body = body.replace(/\[(.+)\]\((.+)\)/gm, "[$1|$2]");
+  body = body.replace(/\[a href="([^\"]+)"\]([^\[]+)\[\/a\]/gm, "[$2|$1]");
   return body.trim();
 }
 
