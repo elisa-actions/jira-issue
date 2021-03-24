@@ -91,7 +91,7 @@ test("issue body is cleaned up", async () => {
       "- list item\n\n" +
       "[link|http://example.com]\n" +
       "h1. Title\n" +
-      "!https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uvicorn[standard]&package-manager=pip&previous-version=0.12.3&new-version=0.13.3!\n" +
+      "[!https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uvicorn[standard]&package-manager=pip&previous-version=0.12.3&new-version=0.13.3!|https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores]\n" +
       "- [{{eb0c748}}|https://github.com/googleapis/python-secret-manager/commit/eb0c748bb930f35c4cfeedceebab9fd6ec6a13ad] chore: release 2.2.0 ([#74|https://github-redirect.dependabot.com/googleapis/python-secret-manager/issues/74])\n" +
       "{quote}\n\n" +
       "*Author*\n" +
