@@ -27,7 +27,7 @@ jobs:
           prerelease_id: "rc"
           release_draft: true
       - name: Create ticket
-        uses: elisa-action/jira-issue@v1
+        uses: elisa-actions/jira-issue@v1
         if: ${{ github.event.action == 'closed' && steps.create_release.outputs.version }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
