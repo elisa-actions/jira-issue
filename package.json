@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ElisaOyj/gh-action-jira-issue.git"
+    "url": "git+https://github.com/elisa-actions/jira-issue.git"
   },
   "author": "Elisa Oyj",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ElisaOyj/gh-action-jira-issue/issues"
+    "url": "https://github.com/elisa-actions/jira-issue/issues"
   },
-  "homepage": "https://github.com/ElisaOyj/gh-action-jira-issue#readme",
+  "homepage": "https://github.com/elisa-actions/jira-issue#readme",
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",

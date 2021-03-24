@@ -21,13 +21,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Create release
         id: create_release
-        uses: ElisaOyj/gh-action-pr-release@master
+        uses: elisa-actions/pr-release@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease_id: "rc"
           release_draft: true
       - name: Create ticket
-        uses: ElisaOyj/gh-action-jira-issue@v1
+        uses: elisa-actions/jira-issue@v1
         if: ${{ github.event.action == 'closed' && steps.create_release.outputs.version }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Update ticket status
-        uses: ElisaOyj/gh-action-jira-issue@v1
+        uses: elisa-actions/jira-issue@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-host: example.com/jira
@@ -88,7 +88,7 @@ curl -X POST \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token <token>" \
     --data '{"event_type": "resolve-ticket", "client_payload": {"version": "1.2.3", "fields": {"customfield_10916": { "id": "15868"}}}}' \
-    https://api.github.com/repos/ElisaOyj/gh-action-jira-issue/dispatches
+    https://api.github.com/repos/elisa-actions/jira-issue/dispatches
 ```
 
 You can provide any custom fields you need in the dispatch event, the values will be used as is.
