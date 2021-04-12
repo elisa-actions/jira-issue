@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create release
         id: create_release
-        uses: elisa-actions/pr-release@master
+        uses: elisa-actions/pr-release@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease_id: "rc"
@@ -38,7 +38,7 @@ jobs:
           title: ${{ steps.create_release.outputs.release_title }}
           description: ${{ steps.create_release.outputs.release_body }}
           release-id: ${{ steps.create_release.outputs.release_id }}
-          action: "create-ticket"
+          action: "create-issue"
       - name: Publish release
         uses: actions/github-script@v3
         if: ${{ github.event.action == 'closed' && steps.create_release.outputs.version }}
