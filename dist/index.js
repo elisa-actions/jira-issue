@@ -62011,6 +62011,7 @@ const core = __webpack_require__(2186);
 const { context } = __webpack_require__(5438);
 const { createIssue } = __webpack_require__(7946);
 const { resolveIssue } = __webpack_require__(693);
+const { createVersion } = __webpack_require__(9373);
 
 exports.run = async function () {
   const action = core.getInput("action") || context.payload.action;
@@ -62020,6 +62021,9 @@ exports.run = async function () {
       break;
     case "resolve-issue":
       await resolveIssue();
+      break;
+    case "create-version":
+      await createVersion();
       break;
     default:
       core.setFailed(`Invalid action type: ${action}`);
@@ -62143,6 +62147,27 @@ async function getUserLink(user) {
   }
   return `[${userData.name || userData.login}|${userData.html_url}]`;
 }
+
+
+/***/ }),
+
+/***/ 9373:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+const core = __webpack_require__(2186);
+const { context } = __webpack_require__(5438);
+
+const { newVersion } = __webpack_require__(3845);
+
+exports.createVersion = async function () {
+  console.log("Start version creation");
+  const name = core.getInput("name") || context.payload.client_payload.title;
+  const description =
+    core.getInput("description") || context.payload.client_payload.description;
+
+  await newVersion(name, description);
+  console.log(`Version ${name} created`);
+};
 
 
 /***/ }),
@@ -62338,6 +62363,24 @@ exports.resolveIssue = async function (issue) {
   console.log(`Update issue:\n${JSON.stringify(resolve)}`);
   try {
     await jira.transitionIssue(issue.id, resolve);
+  } catch (error) {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
+};
+
+exports.newVersion = async function (name, description) {
+  const jira = getJiraClient();
+  const config = parseConfig();
+
+  // https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-versions/#api-rest-api-3-version-post
+  const versionData = {
+    name,
+    description,
+    projectId: config.common.project.id,
+  };
+  try {
+    return await jira.createVersion(versionData);
   } catch (error) {
     core.setFailed(error.message);
     process.exit(1);
