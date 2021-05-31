@@ -7,6 +7,11 @@ test("read configuration", () => {
   });
   const config = parseConfig();
   expect(config).toEqual({
+    common: {
+      project: {
+        id: "11212",
+      },
+    },
     create: {
       issue_link_type: "Cause",
       fields: {

@@ -1,6 +1,6 @@
 # GitHub Action Jira Issue
 
-With this action you can create Jira issues from your GitHub Actions pipeline.
+With this action you can create Jira issues or versions from your GitHub Actions pipeline.
 
 Example configuration for automatic release and ticket creation when a pull request is merged:
 
@@ -114,9 +114,49 @@ You can provide any custom fields you need in the dispatch event, the values wil
 | `locale`             | no       | Locale for datetimes, default "fi"                                                                          |
 | `timezone`           | no       | Timezone for datetimes, default "Europe/Helsinki"                                                           |
 
+Create version when creating a `release/*` branch
+
+```yaml
+name: Create version
+
+on:
+  create:
+    branches: [release/*]
+
+jobs:
+  create-jira-release:
+    runs-on: [self-hosted, Linux]
+
+    steps:
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION="${GITHUB_REF/refs\/heads\/release\//}"
+          echo '::set-output name=version::'$VERSION
+
+      - name: Create Jira release
+        uses: elisa-actions/jira-issue@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          jira-host: atlas.elisa.fi/jira
+          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-password: ${{ secrets.JIRA_PASSWORD }}
+          name: "Project ${{ steps.get_version.outputs.version }}"
+          description: "Version description"
+          action: create-version
+```
+
 ## Configuration file
 
-Many things can be configured from the action inputs but the issue specific configurations live in the Jira configuration file whose default location is `.github/jira-config.yaml`. The file consists of two configuration sections: `create` and `resolve`. These are separate configurations for creating and updating the issues and the format mainly follows the [Jira API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/) requests, but as YAML.
+Many things can be configured from the action inputs, but the issue specific configurations live in the Jira configuration file whose default location is `.github/jira-config.yaml`. The file consists of three configuration sections: `common`, `create` and `resolve`. `common` just has the project id. `create` and `resolve` are separate configurations for creating and updating the issues and the format mainly follows the [Jira API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/) requests, but as YAML.
+
+Common section:
+
+```yaml
+common:
+  project:
+    id: "11212"
+```
 
 In the create section you need to provide the issue link type and then the fields object that contains the actual issue data. This data must follow the structure in the Jira API definition so make sure that you understand it well. You can use the example configuration in this repository to get you started.
 

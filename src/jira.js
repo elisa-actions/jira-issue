@@ -81,6 +81,24 @@ exports.resolveIssue = async function (issue) {
   }
 };
 
+exports.newVersion = async function (name, description) {
+  const jira = getJiraClient();
+  const config = parseConfig();
+
+  // https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-versions/#api-rest-api-3-version-post
+  const versionData = {
+    name,
+    description,
+    projectId: config.common.project.id,
+  };
+  try {
+    return await jira.createVersion(versionData);
+  } catch (error) {
+    core.setFailed(error.message);
+    process.exit(1);
+  }
+};
+
 const parseTitle = function (title) {
   const re = /^(\w+\-\d+)(.*)$/;
   const result = re.exec(title);
