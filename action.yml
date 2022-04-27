@@ -55,6 +55,9 @@ inputs:
     description: "Path for field mapping configuration"
     default: ".github/jira-config.yml"
     required: false
+  fields:
+    description: "Fields for resolve-issue action"
+    required: false
 runs:
   using: "node12"
   main: "dist/index.js"
