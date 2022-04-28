@@ -65103,6 +65103,11 @@ exports.resolveIssue = async function (issue) {
   }
   if (context.payload.client_payload && context.payload.client_payload.fields) {
     Object.assign(fields, context.payload.client_payload.fields);
+  } else {
+    const inputFields = core.getInput("fields");
+    if (inputFields) {
+      Object.assign(fields, JSON.parse(inputFields));
+    }
   }
   const resolve = { transition, fields };
   console.log(`Update issue:\n${JSON.stringify(resolve)}`);
