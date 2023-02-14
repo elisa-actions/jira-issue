@@ -1,4 +1,3 @@
-jest.mock("@actions/github");
 const { setInputs } = require("./test-utils");
 const { newIssue, getIssue, resolveIssue } = require("../src/jira");
 const {

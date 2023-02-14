@@ -1,5 +1,5 @@
 const core = require("@actions/core");
-const { getOctokit, context } = require("@actions/github");
+const { context, getOctokit } = require("@actions/github");
 
 exports.getPR = async function () {
   const token = core.getInput("github-token", { required: true });
@@ -8,21 +8,22 @@ exports.getPR = async function () {
   if (context.issue) {
     const { owner, repo, number } = context.issue;
     console.log(`Get PR #${number} from issue context`);
-    const pr = await octokit.pulls.get({ owner, repo, pull_number: number });
+    const pr = await octokit.rest.pulls.get({ owner, repo, pull_number: number });
     return pr;
   }
   const version =
     core.getInput("version") || context.payload.client_payload.version;
   console.log(`Find PR based on version number ${version}`);
   const { owner, repo } = context.repo;
-  const tags = await octokit.paginate(
-    octokit.repos.listTags.endpoint.merge({ owner, repo })
-  );
+  const tags = await octokit.paginate(octokit.rest.repos.listTags, {
+    owner: owner,
+    repo: repo
+  });
   const releaseTag = tags.filter((t) => t.name === version)[0];
   const q = `SHA:${releaseTag.commit.sha}`;
   console.log(`Search pull request with ${q}`);
   try {
-    const searchResults = await octokit.search.issuesAndPullRequests({ q });
+    const searchResults = await octokit.rest.search.issuesAndPullRequests({ q });
     console.log(`Found ${searchResults.length} matches`);
     const pr = searchResults.data.items[0];
     return pr;
@@ -38,9 +39,9 @@ exports.getReviews = async function () {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
-  const pull_number = pr.data.number;
+  const pull_number = pr.number;
   try {
-    const reviews = await octokit.pulls.listReviews({
+    const reviews = await octokit.rest.pulls.listReviews({
       owner,
       repo,
       pull_number,
@@ -57,7 +58,7 @@ exports.getReviews = async function () {
 exports.getAuthor = async function () {
   try {
     const pr = await exports.getPR();
-    return pr.data.user;
+    return pr.user;
   } catch (error) {
     console.log("Failed to get PR author");
     core.setFailed(error.message);
@@ -69,8 +70,8 @@ exports.getUser = async function (username) {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   try {
-    const user = await octokit.users.getByUsername({ username });
-    return user.data;
+    const user = await octokit.rest.users.getByUsername({ username });
+    return user;
   } catch (error) {
     console.log(`Failed to get user ${username}`);
     core.setFailed(error.message);
@@ -84,21 +85,21 @@ exports.getRelease = async function () {
   const { owner, repo } = context.repo;
   const release_id = core.getInput("release-id");
   if (release_id) {
-    return await octokit.repos.getRelease({ owner, repo, release_id });
+    return await octokit.rest.repos.getRelease({ owner, repo, release_id });
   } else {
     const tag =
       core.getInput("version") || context.payload.client_payload.version;
     console.log(`Get release by tag ${tag}`);
-    return await octokit.repos.getReleaseByTag({ owner, repo, tag });
+    return await octokit.rest.repos.getReleaseByTag({ owner, repo, tag });
   }
 };
 
 exports.appendReleaseBody = async function (text) {
   const release = await exports.getRelease();
-  const release_id = release.data.id;
-  const body = release.data.body + "\n\n" + text;
+  const release_id = release.id;
+  const body = release.body + "\n\n" + text;
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
-  octokit.repos.updateRelease({ owner, repo, release_id, body });
+  octokit.rest.repos.updateRelease({ owner, repo, release_id, body });
 };
