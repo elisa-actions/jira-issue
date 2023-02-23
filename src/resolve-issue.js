@@ -4,7 +4,7 @@ const { getIssue, resolveIssue } = require("./jira");
 exports.resolveIssue = async function () {
   console.log("Start issue resolution");
   const release = await getRelease();
-  const issueNumber = parseIssueNumber(release.data.body);
+  const issueNumber = parseIssueNumber(release.body);
   console.log(`Get issue ${issueNumber}`);
   const issue = await getIssue(issueNumber);
   console.log("Resolve issue");
