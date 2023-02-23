@@ -13,7 +13,7 @@ beforeEach(() => {
   });
   getRelease.mockReturnValueOnce(
     Promise.resolve({
-      data: { body: "Some text\n[DEMO-4321](link1)\n[DEMO-1234](link2)" },
+      body: "Some text\n[DEMO-4321](link1)\n[DEMO-1234](link2)",
     })
   );
   mockFindIssue.mockReturnValueOnce(
