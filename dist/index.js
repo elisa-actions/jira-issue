@@ -66085,7 +66085,7 @@ exports.getPR = async function () {
   try {
     const searchResults = await octokit.rest.search.issuesAndPullRequests({ q });
     console.log(`Found ${searchResults.length} matches`);
-    const pr = searchResults.data.items[0];
+    const pr = searchResults.items[0];
     return pr;
   } catch (error) {
     console.log("Failed to find the correct PR");
@@ -66106,7 +66106,7 @@ exports.getReviews = async function () {
       repo,
       pull_number,
     });
-    return reviews.data;
+    return reviews;
   } catch (error) {
     console.log(`Failed to get reviews for PR #${pull_number}`);
     console.log(JSON.stringify(pr, null, 2));
@@ -66329,7 +66329,7 @@ const { getIssue, resolveIssue } = __nccwpck_require__(3845);
 exports.resolveIssue = async function () {
   console.log("Start issue resolution");
   const release = await getRelease();
-  const issueNumber = parseIssueNumber(release.data.body);
+  const issueNumber = parseIssueNumber(release.body);
   console.log(`Get issue ${issueNumber}`);
   const issue = await getIssue(issueNumber);
   console.log("Resolve issue");
