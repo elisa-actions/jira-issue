@@ -9,7 +9,7 @@ exports.getPR = async function () {
   if (number) {
     console.log(`Get PR #${number} from issue context`);
     try {
-      const { owner, repo, number } = context.issue();
+      const { owner, repo } = context.issue();
       return await octokit.rest.pulls.get({owner, repo, pull_number: number});
     } catch (error) {
       console.log(`Failed to get data for PR #${number}`);
