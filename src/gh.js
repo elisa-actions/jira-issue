@@ -4,11 +4,12 @@ const { context, getOctokit } = require("@actions/github");
 exports.getPR = async function () {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
-
-  if (context.issue) {
-    const { owner, repo, number } = context.issue;
+  const { number } = context.issue();
+  
+  if (number) {
     console.log(`Get PR #${number} from issue context`);
     try {
+      const { owner, repo } = context.issue();
       return await octokit.rest.pulls.get({owner, repo, pull_number: number});
     } catch (error) {
       console.log(`Failed to get data for PR #${number}`);
@@ -19,7 +20,7 @@ exports.getPR = async function () {
   const version =
     core.getInput("version") || context.payload.client_payload.version;
   console.log(`Find PR based on version number ${version}`);
-  const { owner, repo } = context.repo;
+  const { owner, repo } = context.repo();
   let tags;
   try {
     tags = await octokit.paginate(octokit.rest.repos.listTags, {
@@ -49,7 +50,7 @@ exports.getReviews = async function () {
   const pr = await exports.getPR();
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
-  const { owner, repo } = context.repo;
+  const { owner, repo } = context.repo();
   const pull_number = pr.number;
   try {
     return await octokit.rest.pulls.listReviews({
@@ -91,7 +92,7 @@ exports.getUser = async function (username) {
 exports.getRelease = async function () {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
-  const { owner, repo } = context.repo;
+  const { owner, repo } = context.repo();
   const release_id = core.getInput("release-id");
   if (release_id) {
     return await octokit.rest.repos.getRelease({ owner, repo, release_id });
@@ -115,7 +116,7 @@ exports.appendReleaseBody = async function (text) {
   const body = release.body + "\n\n" + text;
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
-  const { owner, repo } = context.repo;
+  const { owner, repo } = context.repo();
   try {
     await octokit.rest.repos.updateRelease({owner, repo, release_id, body});
   } catch (error) {
