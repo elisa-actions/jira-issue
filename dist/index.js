@@ -63147,7 +63147,9 @@ async function buildIssueBody(description) {
   if (includeAuthor) {
     author = await getAuthor();
     body += "\n\n*Author*\n";
-    body += await getUserLink(author);
+    if (author && author.login) {
+      body += await getUserLink(author);
+    }
   }
 
   if (includeReviews) {
@@ -63245,7 +63247,11 @@ exports.getPR = async function () {
     core.setFailed(error.message);
     process.exit(1);
   }
-  const releaseTag = tags.filter((t) => t.name === version)[0];
+  const tagsForVersion = tags.filter((t) => t.name === version);
+  if (tagsForVersion.length === 0) {
+    return null;
+  }
+  const releaseTag = tagsForVersion[0];
   const q = `SHA:${releaseTag.commit.sha}`;
   console.log(`Search pull request with ${q}`);
   try {
@@ -63261,6 +63267,9 @@ exports.getPR = async function () {
 
 exports.getReviews = async function () {
   const pr = await exports.getPR();
+  if (!pr) {
+    return null;
+  }
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
@@ -63282,7 +63291,7 @@ exports.getReviews = async function () {
 exports.getAuthor = async function () {
   try {
     const pr = await exports.getPR();
-    return pr.user;
+    return pr ? pr.user : null;
   } catch (error) {
     console.log("Failed to get PR author");
     core.setFailed(error.message);
