@@ -36,7 +36,9 @@ async function buildIssueBody(description) {
   if (includeAuthor) {
     author = await getAuthor();
     body += "\n\n*Author*\n";
-    body += await getUserLink(author);
+    if (author && author.login) {
+      body += await getUserLink(author);
+    }
   }
 
   if (includeReviews) {
