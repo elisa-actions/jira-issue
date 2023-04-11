@@ -77,10 +77,7 @@ exports.getReviews = async function () {
 exports.getAuthor = async function () {
   try {
     const pr = await exports.getPR();
-    if (!pr) {
-      return null;
-    }
-    return pr.user;
+    return pr?.user;
   } catch (error) {
     console.log("Failed to get PR author");
     core.setFailed(error.message);
