@@ -63225,7 +63225,8 @@ exports.getPR = async function () {
     console.log(`Get PR #${number} from issue context`);
     try {
       const { owner, repo } = context.issue;
-      return await octokit.rest.pulls.get({owner, repo, pull_number: number});
+      const pr = await octokit.rest.pulls.get({owner, repo, pull_number: number});
+      return pr.data;
     } catch (error) {
       console.log(`Failed to get data for PR #${number}`);
       core.setFailed(error.message);
@@ -63257,7 +63258,7 @@ exports.getPR = async function () {
   try {
     const searchResults = await octokit.rest.search.issuesAndPullRequests({ q });
     console.log(`Found ${searchResults.length} matches`);
-    return searchResults.items[0];
+    return searchResults.data.items[0];
   } catch (error) {
     console.log("Failed to find the correct PR");
     core.setFailed(error.message);
@@ -63291,7 +63292,7 @@ exports.getReviews = async function () {
 exports.getAuthor = async function () {
   try {
     const pr = await exports.getPR();
-    return pr ? pr.user : null;
+    return pr?.user;
   } catch (error) {
     console.log("Failed to get PR author");
     core.setFailed(error.message);
@@ -63303,7 +63304,8 @@ exports.getUser = async function (username) {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   try {
-    return await octokit.rest.users.getByUsername({ username });
+    const user = await octokit.rest.users.getByUsername({ username });
+    return user.data;
   } catch (error) {
     console.log(`Failed to get user ${username}`);
     core.setFailed(error.message);
@@ -63317,13 +63319,15 @@ exports.getRelease = async function () {
   const { owner, repo } = context.repo;
   const release_id = core.getInput("release-id");
   if (release_id) {
-    return await octokit.rest.repos.getRelease({ owner, repo, release_id });
+    const release = await octokit.rest.repos.getRelease({ owner, repo, release_id });
+    return release.data;
   } else {
     const tag =
       core.getInput("version") || context.payload.client_payload.version;
     console.log(`Get release by tag ${tag}`);
     try {
-      return await octokit.rest.repos.getReleaseByTag({owner, repo, tag});
+      const release = await octokit.rest.repos.getReleaseByTag({owner, repo, tag});
+      return release.data;
     } catch (error) {
       console.log(`Failed to get release ${release_id}`);
       core.setFailed(error.message);
