@@ -63154,7 +63154,7 @@ async function buildIssueBody(description) {
 
   if (includeReviews) {
     console.log("Fetch reviews");
-    reviews = await getReviews();
+    const reviews = await getReviews();
     if (reviews) {
       body += "\n\n*Reviewers*\n";
       const approvedReviews = reviews.filter(
@@ -63276,11 +63276,12 @@ exports.getReviews = async function () {
   const { owner, repo } = context.repo;
   const pull_number = pr.number;
   try {
-    return await octokit.rest.pulls.listReviews({
+    const reviews = await octokit.rest.pulls.listReviews({
       owner,
       repo,
       pull_number,
     });
+    return reviews.data;
   } catch (error) {
     console.log(`Failed to get reviews for PR #${pull_number}`);
     console.log(JSON.stringify(pr, null, 2));
