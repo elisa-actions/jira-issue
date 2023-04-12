@@ -63292,7 +63292,11 @@ exports.getReviews = async function () {
 exports.getAuthor = async function () {
   try {
     const pr = await exports.getPR();
-    return pr?.user;
+    if (pr) {
+      return pr.user;
+    } else {
+      return null;
+    }
   } catch (error) {
     console.log("Failed to get PR author");
     core.setFailed(error.message);
