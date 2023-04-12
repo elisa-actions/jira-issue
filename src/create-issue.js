@@ -43,7 +43,7 @@ async function buildIssueBody(description) {
 
   if (includeReviews) {
     console.log("Fetch reviews");
-    reviews = await getReviews();
+    const reviews = await getReviews();
     if (reviews) {
       body += "\n\n*Reviewers*\n";
       const approvedReviews = reviews.filter(
