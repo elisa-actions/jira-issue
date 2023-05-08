@@ -21,7 +21,7 @@
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
     "jira-client": "^8.2.2",
-    "jira2md": "^2.1.2",
+    "jira2md": "^3.0.0",
     "js-yaml": "^3.14.0",
     "moment-timezone": "^0.5.43"
   },
