@@ -8,6 +8,7 @@ updates:
       prefix: "ci"
       include: "scope"
     labels: []
+    target-branch: deps
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -18,3 +19,4 @@ updates:
       include: "scope"
     labels: []
     open-pull-requests-limit: 10
+    target-branch: deps
