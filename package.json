@@ -22,7 +22,7 @@
     "@actions/github": "^5.1.1",
     "jira-client": "^8.2.2",
     "jira2md": "^3.0.0",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^4.1.0",
     "moment-timezone": "^0.5.43"
   },
   "devDependencies": {
