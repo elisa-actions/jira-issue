@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone PR branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create release
         uses: elisa-actions/pr-release@v1
         with:
