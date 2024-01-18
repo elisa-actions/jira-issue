@@ -19,4 +19,3 @@ updates:
       include: "scope"
     labels: []
     open-pull-requests-limit: 10
-    target-branch: deps
