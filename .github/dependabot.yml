@@ -8,7 +8,6 @@ updates:
       prefix: "ci"
       include: "scope"
     labels: []
-    target-branch: deps
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
