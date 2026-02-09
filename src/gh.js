@@ -1,7 +1,7 @@
-const core = require("@actions/core");
-const { context, getOctokit } = require("@actions/github");
+import * as core from "@actions/core";
+import { context, getOctokit } from "@actions/github";
 
-exports.getPR = async function () {
+export async function getPR() {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { number } = context.issue;
@@ -49,10 +49,10 @@ exports.getPR = async function () {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.getReviews = async function () {
-  const pr = await exports.getPR();
+export async function getReviews() {
+  const pr = await getPR();
   if (!pr) {
     return null;
   }
@@ -73,11 +73,11 @@ exports.getReviews = async function () {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.getAuthor = async function () {
+export async function getAuthor() {
   try {
-    const pr = await exports.getPR();
+    const pr = await getPR();
     if (pr) {
       return pr.user;
     } else {
@@ -88,9 +88,9 @@ exports.getAuthor = async function () {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.getUser = async function (username) {
+export async function getUser(username) {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   try {
@@ -101,9 +101,9 @@ exports.getUser = async function (username) {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.getRelease = async function () {
+export async function getRelease() {
   const token = core.getInput("github-token", { required: true });
   const octokit = getOctokit(token);
   const { owner, repo } = context.repo;
@@ -124,10 +124,10 @@ exports.getRelease = async function () {
       process.exit(1);
     }
   }
-};
+}
 
-exports.appendReleaseBody = async function (text) {
-  const release = await exports.getRelease();
+export async function appendReleaseBody(text) {
+  const release = await getRelease();
   const release_id = release.id;
   const body = release.body + "\n\n" + text;
   const token = core.getInput("github-token", { required: true });
@@ -139,4 +139,4 @@ exports.appendReleaseBody = async function (text) {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}

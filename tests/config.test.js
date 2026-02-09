@@ -1,5 +1,14 @@
-const { setInputs } = require("./test-utils");
-const { parseConfig } = require("../src/config");
+import { jest } from "@jest/globals";
+
+const coreMock = {
+  getInput: jest.fn(),
+  setFailed: jest.fn(),
+};
+
+jest.unstable_mockModule("@actions/core", () => coreMock);
+
+const { setInputs } = await import("./test-utils.js");
+const { parseConfig } = await import("../src/config.js");
 
 test("read configuration", () => {
   setInputs({

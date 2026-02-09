@@ -1,9 +1,9 @@
-const core = require("@actions/core");
-const { context } = require("@actions/github");
-const { createIssue } = require("./create-issue");
-const { resolveIssue } = require("./resolve-issue");
+import * as core from "@actions/core";
+import { context } from "@actions/github";
+import { createIssue } from "./create-issue.js";
+import { resolveIssue } from "./resolve-issue.js";
 
-exports.run = async function () {
+export async function run() {
   const action = core.getInput("action") || context.payload.action;
   switch (action) {
     case "create-issue":
@@ -15,4 +15,4 @@ exports.run = async function () {
     default:
       core.setFailed(`Invalid action type: ${action}`);
   }
-};
+}

@@ -1,16 +1,13 @@
-const mockAddNewIssue = jest.fn();
-const mockFindIssue = jest.fn();
-const mockTransitionIssue = jest.fn();
+import { jest } from "@jest/globals";
 
-function mock() {
+export const mockAddNewIssue = jest.fn();
+export const mockFindIssue = jest.fn();
+export const mockTransitionIssue = jest.fn();
+
+export default function JiraClientMock() {
   return {
     addNewIssue: mockAddNewIssue,
     findIssue: mockFindIssue,
     transitionIssue: mockTransitionIssue,
   };
 }
-
-module.exports = mock;
-module.exports.mockAddNewIssue = mockAddNewIssue;
-module.exports.mockFindIssue = mockFindIssue;
-module.exports.mockTransitionIssue = mockTransitionIssue;

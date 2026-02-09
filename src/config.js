@@ -1,9 +1,9 @@
-const core = require("@actions/core");
-const fs = require("fs");
-const yaml = require("js-yaml");
+import * as core from "@actions/core";
+import fs from "node:fs";
+import yaml from "js-yaml";
 
-exports.parseConfig = function () {
+export function parseConfig() {
   const configFile = core.getInput("configuration-file");
   const config = yaml.load(fs.readFileSync(configFile, "utf-8"));
   return config;
-};
+}

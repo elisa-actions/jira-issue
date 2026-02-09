@@ -1,15 +1,27 @@
-jest.mock("../src/create-issue");
-jest.mock("../src/resolve-issue");
-jest.mock("@actions/core");
-jest.mock("@actions/github");
+import { jest } from "@jest/globals";
 
-const { setInputs } = require("./test-utils");
+const createIssue = jest.fn();
+const resolveIssue = jest.fn();
 
-const core = require("@actions/core");
-const { context } = require("@actions/github");
-const { run } = require("../src/action");
-const { createIssue } = require("../src/create-issue");
-const { resolveIssue } = require("../src/resolve-issue");
+const coreMock = {
+  getInput: jest.fn(),
+  setFailed: jest.fn(),
+};
+
+const githubMock = {
+  context: { payload: {}, issue: {}, repo: {} },
+  getOctokit: jest.fn(),
+};
+
+jest.unstable_mockModule("@actions/core", () => coreMock);
+jest.unstable_mockModule("@actions/github", () => githubMock);
+jest.unstable_mockModule("../src/create-issue.js", () => ({ createIssue }));
+jest.unstable_mockModule("../src/resolve-issue.js", () => ({ resolveIssue }));
+
+const { setInputs } = await import("./test-utils.js");
+const core = await import("@actions/core");
+const { context } = await import("@actions/github");
+const { run } = await import("../src/action.js");
 
 test("create issue", () => {
   setInputs({ action: "create-issue" });
