@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",
     "baseline-browser-mapping": "^2.9.19",
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0"
   }
 }
