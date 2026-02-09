@@ -17,6 +17,9 @@
     "url": "https://github.com/elisa-actions/jira-issue/issues"
   },
   "homepage": "https://github.com/elisa-actions/jira-issue#readme",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@actions/core": "^3.0.0",
     "@actions/github": "^9.0.0",
