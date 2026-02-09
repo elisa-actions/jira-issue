@@ -1,7 +1,12 @@
 import * as core from "@actions/core";
 
 export function setInputs(data) {
-  core.getInput.mockImplementation((name, params = {}) => {
+  const getInputMock =
+    core.getInput && typeof core.getInput.mockImplementation === "function"
+      ? core.getInput
+      : jest.spyOn(core, "getInput");
+
+  getInputMock.mockImplementation((name, params = {}) => {
     return data[name] || "";
   });
 }
