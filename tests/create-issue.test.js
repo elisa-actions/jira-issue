@@ -1,15 +1,33 @@
-jest.mock("../src/gh");
-jest.mock("../src/jira");
-const { setInputs } = require("./test-utils");
+import { jest } from "@jest/globals";
 
-const {
+const appendReleaseBody = jest.fn();
+const getAuthor = jest.fn();
+const getReviews = jest.fn();
+const getUser = jest.fn();
+const newIssue = jest.fn();
+
+const coreMock = {
+  getInput: jest.fn(),
+  setFailed: jest.fn(),
+};
+
+const githubMock = {
+  context: { payload: { client_payload: {} }, issue: {}, repo: {} },
+  getOctokit: jest.fn(),
+};
+
+jest.unstable_mockModule("@actions/core", () => coreMock);
+jest.unstable_mockModule("@actions/github", () => githubMock);
+jest.unstable_mockModule("../src/gh.js", () => ({
   appendReleaseBody,
   getAuthor,
   getReviews,
   getUser,
-} = require("../src/gh");
-const { newIssue } = require("../src/jira");
-const { createIssue } = require("../src/create-issue");
+}));
+jest.unstable_mockModule("../src/jira.js", () => ({ newIssue }));
+
+const { setInputs } = await import("./test-utils.js");
+const { createIssue } = await import("../src/create-issue.js");
 
 beforeEach(() => {
   getAuthor.mockReturnValueOnce(

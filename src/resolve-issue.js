@@ -1,15 +1,15 @@
-const { getRelease } = require("./gh");
-const { getIssue, resolveIssue } = require("./jira");
+import { getRelease } from "./gh.js";
+import { getIssue, resolveIssue as resolveJiraIssue } from "./jira.js";
 
-exports.resolveIssue = async function () {
+export async function resolveIssue() {
   console.log("Start issue resolution");
   const release = await getRelease();
   const issueNumber = parseIssueNumber(release.body);
   console.log(`Get issue ${issueNumber}`);
   const issue = await getIssue(issueNumber);
   console.log("Resolve issue");
-  await resolveIssue(issue);
-};
+  await resolveJiraIssue(issue);
+}
 
 function parseIssueNumber(releaseBody) {
   const re = /(\[\w+\-\d+\])/gm;

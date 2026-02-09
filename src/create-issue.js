@@ -1,11 +1,11 @@
-const core = require("@actions/core");
-const { context } = require("@actions/github");
-const j2m = require("jira2md");
+import * as core from "@actions/core";
+import { context } from "@actions/github";
+import j2m from "jira2md";
 
-const { appendReleaseBody, getAuthor, getReviews, getUser } = require("./gh");
-const { newIssue } = require("./jira");
+import { appendReleaseBody, getAuthor, getReviews, getUser } from "./gh.js";
+import { newIssue } from "./jira.js";
 
-exports.createIssue = async function () {
+export async function createIssue() {
   console.log("Start issue creation");
   const jiraHost = core.getInput("jira-host", { required: true });
   const issueDescriptor = core.getInput("issue-descriptor");
@@ -23,7 +23,7 @@ exports.createIssue = async function () {
       `[${issue.key}](https://${jiraHost}/browse/${issue.key})`;
     await appendReleaseBody(link);
   }
-};
+}
 
 async function buildIssueBody(description) {
   console.log("Build issue body message");

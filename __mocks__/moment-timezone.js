@@ -1,7 +1,9 @@
+import { jest } from "@jest/globals";
+
+const actualMoment = jest.requireActual("moment-timezone");
+
 const mockMoment = function () {
-  return jest.requireActual("moment-timezone")("2020-01-01T00:00:00.000Z");
+  return actualMoment("2020-01-01T00:00:00.000Z");
 };
-module.exports = Object.assign(
-  mockMoment,
-  jest.requireActual("moment-timezone")
-);
+
+export default Object.assign(mockMoment, actualMoment);

@@ -1,11 +1,12 @@
-const core = require("@actions/core");
-const { context } = require("@actions/github");
-const JiraApi = require("jira-client");
-const { parseConfig } = require("./config");
+import * as core from "@actions/core";
+import { context } from "@actions/github";
+import JiraApi from "jira-client";
+import moment from "moment-timezone";
+
+import { parseConfig } from "./config.js";
 
 const locale = core.getInput("locale") || "fi";
 const timezone = core.getInput("timezone") || "Europe/Helsinki";
-var moment = require("moment-timezone");
 moment.locale(locale);
 moment.defaultFormat = "YYYY-MM-DDTHH:mm:ss.SSSZZ";
 moment.tz.setDefault(timezone);
@@ -20,7 +21,7 @@ function getJiraClient() {
   });
 }
 
-exports.newIssue = async function (title, description) {
+export async function newIssue(title, description) {
   const jira = getJiraClient();
   const parsedTitle = parseTitle(title);
   const issueData = await createIssueData(
@@ -34,9 +35,9 @@ exports.newIssue = async function (title, description) {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.getIssue = async function (number) {
+export async function getIssue(number) {
   const jira = getJiraClient();
   try {
     return await jira.findIssue(number);
@@ -44,9 +45,9 @@ exports.getIssue = async function (number) {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
-exports.resolveIssue = async function (issue) {
+export async function resolveIssue(issue) {
   const jira = getJiraClient();
   const config = parseConfig();
   const transition = config.resolve.transition;
@@ -84,7 +85,7 @@ exports.resolveIssue = async function (issue) {
     core.setFailed(error.message);
     process.exit(1);
   }
-};
+}
 
 const parseTitle = function (title) {
   const re = /^(\w+\-\d+)(.*)$/;

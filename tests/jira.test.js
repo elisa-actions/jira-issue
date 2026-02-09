@@ -1,11 +1,80 @@
-const { setInputs } = require("./test-utils");
-const { newIssue, getIssue, resolveIssue } = require("../src/jira");
-const {
-  mockAddNewIssue,
-  mockFindIssue,
-  mockTransitionIssue,
-} = require("../__mocks__/jira-client");
-const { context } = require("@actions/github");
+import { jest } from "@jest/globals";
+
+const coreMock = {
+  getInput: jest.fn(),
+  setFailed: jest.fn(),
+};
+
+const githubMock = {
+  context: { payload: { client_payload: {} }, issue: {}, repo: {} },
+  getOctokit: jest.fn(),
+};
+
+const mockAddNewIssue = jest.fn();
+const mockFindIssue = jest.fn();
+const mockTransitionIssue = jest.fn();
+
+function JiraClientMock() {
+  return {
+    addNewIssue: mockAddNewIssue,
+    findIssue: mockFindIssue,
+    transitionIssue: mockTransitionIssue,
+  };
+}
+
+jest.unstable_mockModule("@actions/core", () => coreMock);
+jest.unstable_mockModule("@actions/github", () => githubMock);
+jest.unstable_mockModule("jira-client", () => ({ default: JiraClientMock }));
+jest.unstable_mockModule("moment-timezone", () => {
+  const helsinkiOffsetMinutes = 120;
+  const baseUtcMs = Date.parse("2020-01-01T00:00:00.000Z");
+
+  function formatHelsinki(msUtc) {
+    const localMs = msUtc + helsinkiOffsetMinutes * 60 * 1000;
+    const d = new Date(localMs);
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const yyyy = d.getUTCFullYear();
+    const mm = pad2(d.getUTCMonth() + 1);
+    const dd = pad2(d.getUTCDate());
+    const hh = pad2(d.getUTCHours());
+    const mi = pad2(d.getUTCMinutes());
+    const ss = pad2(d.getUTCSeconds());
+    return `${yyyy}-${mm}-${dd}T${hh}:${mi}:${ss}+02:00`;
+  }
+
+  const moment = function () {
+    let currentUtcMs = baseUtcMs;
+    return {
+      add(durationMs) {
+        currentUtcMs += durationMs;
+        return this;
+      },
+      format() {
+        return formatHelsinki(currentUtcMs);
+      },
+    };
+  };
+
+  moment.locale = jest.fn();
+  moment.defaultFormat = "";
+  moment.tz = { setDefault: jest.fn() };
+  moment.duration = (offset) => {
+    if (typeof offset === "number") return offset;
+    if (typeof offset !== "string") return 0;
+
+    const parts = offset.split(":").map((p) => Number(p));
+    if (parts.some((n) => Number.isNaN(n))) return 0;
+
+    const [h = 0, m = 0, s = 0] = parts;
+    return ((h * 60 + m) * 60 + s) * 1000;
+  };
+
+  return { default: moment };
+});
+
+const { setInputs } = await import("./test-utils.js");
+const { context } = await import("@actions/github");
+const { newIssue, getIssue, resolveIssue } = await import("../src/jira.js");
 
 beforeEach(() => {
   setInputs({
