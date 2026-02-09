@@ -41,7 +41,7 @@ export async function getIssue(number) {
   const jira = getJiraClient();
   try {
     return await jira.findIssue(number);
-  } catch {
+  } catch (error) {
     core.setFailed(error.message);
     process.exit(1);
   }
