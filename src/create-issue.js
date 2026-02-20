@@ -34,7 +34,7 @@ async function buildIssueBody(description) {
   body = cleanBody(body);
 
   if (includeAuthor) {
-    author = await getAuthor();
+    let author = await getAuthor();
     body += "\n\n*Author*\n";
     if (author && author.login) {
       body += await getUserLink(author);
