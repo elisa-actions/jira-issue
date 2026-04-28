@@ -21,7 +21,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@actions/core": "^3.0.0",
+    "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.0",
     "jira-client": "^8.2.2",
     "jira2md": "^3.0.1",
