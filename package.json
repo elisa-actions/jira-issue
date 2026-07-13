@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.44.0",
-    "baseline-browser-mapping": "^2.10.38",
+    "baseline-browser-mapping": "^2.10.43",
     "cross-env": "^10.1.0",
     "jest": "^30.4.2"
   }
