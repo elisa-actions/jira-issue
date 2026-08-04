@@ -29,8 +29,8 @@
     "moment-timezone": "^0.6.3"
   },
   "devDependencies": {
+    "baseline-browser-mapping": "^2.11.8",
     "@vercel/ncc": "^0.44.1",
-    "baseline-browser-mapping": "^2.10.38",
     "cross-env": "^10.1.0",
     "jest": "^30.4.2"
   }
