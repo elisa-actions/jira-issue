@@ -27,6 +27,8 @@
     "jira2md": "^3.0.1",
     "js-yaml": "^5.4.1",
     "moment-timezone": "^0.6.5"
+    "js-yaml": "^5.4.3",
+    "moment-timezone": "^0.6.4"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.45.0",
